@@ -12,7 +12,7 @@ pub struct CamelOptions {
 
 pub fn to_case_snake_like(convertable_string: &str, replace_with: &str, case: &str) -> String {
     let mut first_character: bool = true;
-    let mut result: String = "".to_owned();
+    let mut result: String = String::with_capacity(convertable_string.len() * 2);
     for char_with_index in convertable_string.chars().enumerate() {
         if char_is_seperator(char_with_index.1.to_owned()) {
             first_character = true;
@@ -32,7 +32,7 @@ pub fn to_case_camel_like(convertable_string: &str, camel_options: CamelOptions)
     let mut new_word: bool = camel_options.new_word;
     let mut first_word: bool = camel_options.first_word;
     let mut last_char: char = camel_options.last_char;
-    let mut result: String = "".to_owned();
+    let mut result: String = String::with_capacity(convertable_string.len() * 2);
     for character in convertable_string.chars() {
         if char_is_seperator(character) {
             new_word = true;
