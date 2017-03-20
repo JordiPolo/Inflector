@@ -75,11 +75,12 @@ pub fn to_foreign_key(non_foreign_key_string: &str) -> String {
     }
 }
 fn safe_convert(safe_string: &str) -> String {
-    let snake_cased: String = to_snake_case(safe_string);
+    let mut snake_cased: String = to_snake_case(safe_string);
     if snake_cased.ends_with("_id") {
         snake_cased
     } else {
-        format!("{}{}", snake_cased, "_id")
+        snake_cased.push_str("_id");
+        snake_cased
     }
 }
 
@@ -135,5 +136,5 @@ fn safe_convert(safe_string: &str) -> String {
 ///
 /// ```
 pub fn is_foreign_key(test_string: &str) -> bool {
-    to_foreign_key(test_string.clone()) == test_string
+    to_foreign_key(&test_string) == test_string
 }

@@ -91,15 +91,19 @@ pub fn to_singular(non_singular_string: &str) -> String {
             "teeth" => "tooth",
             "quizzes" => "quiz"
         ];
+        let mut result: String = String::with_capacity(non_singular_string.len() * 2);
         for &(ref rule, replace) in RULES.iter().rev() {
             if let Some(c) = rule.captures(&non_singular_string) {
                 if let Some(c) = c.get(1) {
-                    return format!("{}{}", c.as_str(), replace);
+                    for word in [c.as_str(), replace].iter() {
+                        result.push_str(word);
+                    }
+                    return result
                 }
             }
         }
 
-        format!("{}", non_singular_string)
+        non_singular_string.to_owned()
     }
 }
 
@@ -120,7 +124,7 @@ macro_rules! rules{
 
 lazy_static!{
     static ref RULES: Vec<(Regex, &'static str)> = {
-    let mut r = Vec::new();
+    let mut r = Vec::with_capacity(27);
     rules![r;
      r"(\w*)s$" => "",
      r"(n)ews$" => "ews",

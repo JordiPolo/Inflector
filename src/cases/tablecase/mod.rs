@@ -64,7 +64,11 @@ use cases::case::*;
 pub fn to_table_case(non_table_case_string: &str) -> String {
     let snaked: String = to_case_snake_like(non_table_case_string, "_", "lower");
     let split: (&str, &str) = snaked.split_at(snaked.rfind('_').unwrap_or(0));
-    format!("{}{}", split.0, to_plural(split.1))
+    let mut result: String = String::with_capacity(non_table_case_string.len() * 2);
+    for word in [split.0, &to_plural(split.1)].iter() {
+        result.push_str(word)
+    }
+    result
 }
 
 #[cfg(feature = "heavyweight")]
@@ -126,7 +130,7 @@ pub fn to_table_case(non_table_case_string: &str) -> String {
 ///     assert!(asserted_bool == false);
 /// ```
 pub fn is_table_case(test_string: &str) -> bool {
-     to_table_case(&test_string.clone()) == test_string
+     to_table_case(&test_string) == test_string
 }
 
 #[cfg(all(feature = "unstable", test))]

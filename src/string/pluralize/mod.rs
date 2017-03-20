@@ -19,7 +19,7 @@ macro_rules! rules{
 
 lazy_static!{
     static ref RULES: Vec<(Regex, &'static str)> = {
-        let mut r = Vec::new();
+        let mut r = Vec::with_capacity(24);
         rules![r;
                r"(\w*)s$" => "s",
                r"(\w*([^aeiou]ese))$" => "",
@@ -139,15 +139,22 @@ pub fn to_plural(non_plural_string: &str) -> String {
             "tooth" => "teeth",
             "quiz" => "quizzes"
         ];
+        let mut result: String = String::with_capacity(non_plural_string.len() * 2);
         for &(ref rule, replace) in RULES.iter().rev() {
             if let Some(c) = rule.captures(&non_plural_string) {
                 if let Some(c) = c.get(1) {
-                    return format!("{}{}", c.as_str(), replace);
+                    for word in [c.as_str(), replace].iter() {
+                        result.push_str(word);
+                    }
+                    return result
                 }
             }
         }
 
-        format!("{}s", non_plural_string)
+        for word in [non_plural_string, "s"].iter() {
+            result.push_str(word);
+        }
+        result
     }
 }
 

@@ -64,21 +64,25 @@ fn append_on_new_word(mut result: String, first_word: bool, character: char, cam
     result
 }
 
+#[inline]
 fn not_first_word_and_has_seperator(first_word: bool, has_seperator: bool) -> bool {
     has_seperator && !first_word
 }
 
+#[inline]
 fn first_word_or_not_inverted(first_word: bool, inverted: bool) -> bool {
     !inverted || first_word
 }
 
 
+#[inline]
 fn last_char_lower_current_is_upper_or_new_word(new_word: bool, last_char: char, character: char) -> bool{
     new_word ||
         ((last_char.is_lowercase() && character.is_uppercase()) &&
          (last_char != ' '))
 }
 
+#[inline]
 fn char_is_seperator(character: char) -> bool {
     character == '-' || character == '_' || character == ' '
 }
@@ -114,11 +118,13 @@ fn snake_like_with_seperator(mut accumlator: String, replace_with: &str, current
     }
 }
 
+#[inline]
 fn next_or_previous_char_is_lowercase(convertable_string: &str, char_with_index: usize) -> bool {
     convertable_string.chars().nth(char_with_index + 1).unwrap_or('A').is_lowercase() ||
         convertable_string.chars().nth(char_with_index - 1).unwrap_or('A').is_lowercase()
 }
 
+#[inline]
 fn char_is_uppercase(test_char: char) -> bool {
     test_char == test_char.to_ascii_uppercase()
 }

@@ -98,7 +98,11 @@ pub fn to_class_case(non_class_case_string: &str) -> String {
     let class_plural: String = to_case_camel_like(non_class_case_string, options);
     let split: (&str, &str) =
         class_plural.split_at(class_plural.rfind(char::is_uppercase).unwrap_or(0));
-    format!("{}{}", split.0, to_singular(split.1))
+    let mut result: String = String::with_capacity(non_class_case_string.len() * 2);
+    for word in [split.0, &to_singular(split.1)].iter() {
+        result.push_str(word)
+    }
+    result
 }
 
 #[cfg(feature = "heavyweight")]
@@ -194,7 +198,7 @@ pub fn to_class_case(non_class_case_string: &str) -> String {
 ///
 /// ```
 pub fn is_class_case(test_string: &str) -> bool {
-    to_class_case(&test_string.clone()) == test_string
+    to_class_case(&test_string) == test_string
 }
 
 #[cfg(all(feature = "unstable", test))]

@@ -20,7 +20,7 @@ macro_rules! string_tests {
         $(
             #[test]
             fn $test_name() {
-                assert_eq!($to_cast.to_string().$imp_trait(), $casted)
+                assert_eq!($to_cast.to_owned().$imp_trait(), $casted)
             }
         )*
     }
@@ -56,7 +56,7 @@ macro_rules! gated_string_tests {
             #[test]
             #[cfg(feature = "heavyweight")]
             fn $test_name() {
-                assert_eq!($to_cast.to_string().$imp_trait(), $casted)
+                assert_eq!($to_cast.to_owned().$imp_trait(), $casted)
             }
         )*
     }

@@ -168,7 +168,7 @@ pub fn to_camel_case(non_camelized_string: &str) -> String {
 ///     assert!(asserted_bool == false);
 /// ```
 pub fn is_camel_case(test_string: &str) -> bool {
-    to_camel_case(&test_string.clone()) == test_string
+    to_camel_case(&test_string) == test_string
 }
 
 #[cfg(all(feature = "unstable", test))]

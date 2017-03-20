@@ -120,28 +120,39 @@ pub fn ordinalize(non_ordinalized_string: &str) -> String {
     }
     if chars.len() > 1 {
         if second_last_number_is_one(chars) {
-            return format!("{}{}", non_ordinalized_string, "th");
-        } else if string_contains_decimal(non_ordinalized_string.to_owned()) {
+            return append_to(non_ordinalized_string, "th");
+        } else if string_contains_decimal(non_ordinalized_string) {
             return non_ordinalized_string.to_owned();
         }
     }
     match last_number {
-        '1' => format!("{}{}", non_ordinalized_string, "st"),
-        '2' => format!("{}{}", non_ordinalized_string, "nd"),
-        '3' => format!("{}{}", non_ordinalized_string, "rd"),
-        _ => format!("{}{}", non_ordinalized_string, "th"),
+        '1' => append_to(non_ordinalized_string, "st"),
+        '2' => append_to(non_ordinalized_string, "nd"),
+        '3' => append_to(non_ordinalized_string, "rd"),
+        _ => append_to(non_ordinalized_string, "th"),
     }
 }
 
+#[inline]
+fn append_to(to_ordinal: &str, suffix: &str) -> String {
+    let mut result: String = String::with_capacity(to_ordinal.len() * 2);
+    for word in [to_ordinal, suffix].iter() {
+        result.push_str(word);
+    }
+    result
+}
+
+#[inline]
 fn is_ordinalizable(last_number: char) -> bool {
     !last_number.is_numeric()
 }
 
+#[inline]
 fn second_last_number_is_one(chars: Vec<char>) -> bool {
-    let second_last_number: char = chars[chars.len() - 2];
-    second_last_number == '1'
+    chars[chars.len() - 2] == '1'
 }
 
-fn string_contains_decimal(non_ordinalized_string: String) -> bool {
-    non_ordinalized_string.contains('.')
+#[inline]
+fn string_contains_decimal(non_ordinalized_string: &str) -> bool {
+    non_ordinalized_string.to_owned().contains('.')
 }
